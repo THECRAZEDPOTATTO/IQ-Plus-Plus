@@ -1,4 +1,5 @@
-# IQ++ V.Dumpster Fire
+# IQ++ 
+## Version Dumpster Fire
 Better RBG for games like GTA5, Roblox, Minecraft and Apps like Discord and Snapchat
 
 # Right Now

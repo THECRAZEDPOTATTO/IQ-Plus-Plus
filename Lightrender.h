@@ -15,10 +15,22 @@
 #include <unordered_set>
 #include <cmath>
 //Lightrender.h
-int wantedlevl = 0;//4
-int robbery = 0;//5
-int misson = 0;//2
-int health = 0;//5
+class GTAV {       
+public:             
+    int wantedlevl = 0;//4
+    int robbery = 0;//5
+    int misson = 0;//2
+    int health = 100;//5
+};
+class Minecraft {
+public:
+    int cave = 0;//4
+    int nether = 0;//4
+    int deepdark = 0;//5
+    int health = 20;//5
+    int rain = 0;//3
+};
+GTAV GTA;
 std::vector<CorsairLedColor> GTA5WgetAvailableKeys()
 {
     std::unordered_set<int> colorsSet;
@@ -86,7 +98,7 @@ void GTA5WPULSERUNNER(int ms) {
         }
         });
     while (continueExecution) {
-        if (wantedlevl > 0) {
+        if (GTA.wantedlevl > 0) {
             std::cout << "";
         }
         else {
@@ -95,6 +107,7 @@ void GTA5WPULSERUNNER(int ms) {
     }
     lightingThread.join();
 }
+
 //END OF GTAWANTEDLEVEL
 //START OF GTAMON
 std::vector<CorsairLedColor> GTA5MgetAvailableKeys()
@@ -164,7 +177,7 @@ void GTA5MPULSERUNNER(int ms) {
         }
         });
     while (continueExecution) {
-        if (wantedlevl > 0) {
+        if (GTA.robbery == 1) {
             std::cout << "";
         }
         else {
@@ -242,7 +255,7 @@ void GTA5DPULSERUNNER(int ms) {
         }
         });
     while (continueExecution) {
-        if (health < 1) {
+        if (GTA.health < 1) {
             std::cout << "";
         }
         else {
@@ -284,10 +297,10 @@ void GTA5(int status) {
         GTA5Death();
     }
 }
-void qender() {
+void qenderGTA() {
     GTA5ROB();
     GTA5wanted();
-
+    GTA5Death();
 }
 void roblox(int status) {
 

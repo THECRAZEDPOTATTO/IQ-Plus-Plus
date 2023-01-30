@@ -31,6 +31,7 @@ public:
     int rain = 0;//3
 };
 GTAV GTA;
+Minecraft MC;
 std::vector<CorsairLedColor> GTA5WgetAvailableKeys()
 {
     std::unordered_set<int> colorsSet;
@@ -264,7 +265,75 @@ void GTA5DPULSERUNNER(int ms) {
     }
     lightingThread.join();
 }
+//START OF MINECRAFT DEEP DARK
+const double PI = 3.14159265358979323846;
+std::vector<CorsairLedColor> MCDDgetAvailableKeys() {
 
+    std::unordered_set<int> colorsSet;
+    for (int deviceIndex = 0, size = CorsairGetDeviceCount(); deviceIndex < size; deviceIndex++)
+    {
+        if (const auto ledPositions = CorsairGetLedPositionsByDeviceIndex(deviceIndex))
+        {
+            for (auto i = 0; i < ledPositions->numberOfLed; i++)
+            {
+                const auto ledId = ledPositions->pLedPosition[i].ledId;
+                colorsSet.insert(ledId);
+            }
+        }
+    }
+
+    std::vector<CorsairLedColor> colorsVector;
+    colorsVector.reserve(colorsSet.size());
+    for (const auto& ledId : colorsSet)
+    {
+        colorsVector.push_back({ static_cast<CorsairLedId>(ledId), 0, 0, 255 });
+    }
+    return colorsVector;
+}
+void MCDDperformWavyGradientEffect(int waveDuration, std::vector<CorsairLedColor>& ledColorsVec, int frames)
+{
+    const auto timePerFrame = 2000; 
+    const int colorPalette[5][3] = { {4,24,32}, {1,42,57}, {2,64,80}, {97,195,203}, {197,205,181} };//Deep Dark colors
+    int colorIndex = 0;
+    for (auto i = 0; i < frames; ++i)
+    {
+        for (auto& ledColor : ledColorsVec)
+        {
+            ledColor.r = colorPalette[colorIndex][0];
+            ledColor.g = colorPalette[colorIndex][1];
+            ledColor.b = colorPalette[colorIndex][2];
+        }
+        CorsairSetLedsColorsAsync(static_cast<int>(ledColorsVec.size()), ledColorsVec.data(), nullptr, nullptr);
+        std::this_thread::sleep_for(std::chrono::milliseconds(timePerFrame));
+        colorIndex = (colorIndex + 1) % 5;
+    }
+}
+
+
+void MCDDPULSERUNNER(int ms) {
+    std::atomic_int waveDuration{ ms };
+    std::atomic_bool continueExecution{ true };
+
+    auto colorsVector = MCDDgetAvailableKeys();
+    if (colorsVector.empty()) {
+        exit(1);
+    }
+    std::thread lightingThread([&waveDuration, &continueExecution, &colorsVector] {
+        while (continueExecution) {
+            MCDDperformWavyGradientEffect(waveDuration.load(), colorsVector, 255);
+        }
+        });
+    while (continueExecution) {
+        if (MC.deepdark == 1) {
+            std::cout << "";
+        }
+        else {
+            continueExecution = false;
+        }
+    }
+    lightingThread.join();
+}
+//END OF MCDD
 
 
 
@@ -277,13 +346,18 @@ void GTA5wanted() {
 }
 void GTA5ROB() {
     std::vector<CorsairLedColor> ledColorsVec = GTA5MgetAvailableKeys();
-    GTA5MperformPulseEffect(2000, ledColorsVec, 300);
+    GTA5MperformPulseEffect(2000, ledColorsVec, 300);//Frame rates the bigger the slower it is 
     GTA5MPULSERUNNER(10);
 }
 void GTA5Death() {
     std::vector<CorsairLedColor> ledColorsVec = GTA5DgetAvailableKeys();
     GTA5DperformPulseEffect(2000, ledColorsVec, 500);
     GTA5DPULSERUNNER(10);
+}
+void MCDD() {
+    std::vector<CorsairLedColor> ledColorsVec = MCDDgetAvailableKeys();
+    MCDDperformWavyGradientEffect(2000, ledColorsVec, 700);
+    MCDDPULSERUNNER(10);
 }
 void Loading() {
    

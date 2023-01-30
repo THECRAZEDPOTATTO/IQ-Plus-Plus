@@ -117,9 +117,13 @@ int main()
 	else {
 		std::cout << "Not a Valid input!" << std::endl;// OMG WORDS YOUR FORBIDDEN TO SAY ;)
 		getchar();
-    //WILL ADD GAME SYNC SOON
 		exit(1);
 	}
-  // ADDING HOOKS AND SHIT HERE
+	int INPUTMEM = 0x118;
+	std::cout << "Taking Memory Input Form: " << INPUTMEM << std::endl;
+	/*
+	GTA[1,2,3] 1 = wantde 2 = robbery 3 = death
+	
+	*/
 	return 0;
 }

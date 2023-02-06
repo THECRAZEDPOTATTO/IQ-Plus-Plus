@@ -1,6 +1,6 @@
 # IQ++ 
 ## Version Dumpster Fire v.1.2 
-Better RGB for games like GTA5, Roblox, Minecraft and Apps like Discord and Snapchat
+Better RGB for games like GTA5, Roblox, Minecraft
 
 # Right Now
 - GTA now has 3 RGB syncs Death, Wanted, and Robbery [STILL NOT HOOKED TO GAME MEMORY]

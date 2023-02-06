@@ -8,3 +8,6 @@ Better RGB for games like GTA5, Roblox, Minecraft
 - Added Minecraft Death RGB
 # When
 I will be adding a lot more as I got on in this project
+
+# Use
+to use this add your custom memory tiggers and link them to a premade light action
